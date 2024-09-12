@@ -24,38 +24,41 @@ class HomePage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                controller.pickImage();
-                // controller.pickMultiImage();
+                // controller.pickImage();
+                controller.pickMultiImage();
               },
               child: const Text("Choose Image"),
             ),
-            ValueListenableBuilder(
-              valueListenable: controller.selectedImage,
-              builder: (context, value, child) {
-                if (value != null) {
-                  return displayImage(value);
-                } else {
-                  return Text("no image yet");
-                }
-              },
-            )
             // ValueListenableBuilder(
-            //   valueListenable: controller.multiImage,
+            //   valueListenable: controller.selectedImage,
             //   builder: (context, value, child) {
             //     if (value != null) {
-            //       return GridView.builder(
-            //         gridDelegate:
-            //             const SliverGridDelegateWithFixedCrossAxisCount(
-            //                 crossAxisCount: 1, childAspectRatio: 1),
-            //         itemBuilder: (context, index) {
-            //           return Image.file(File(value[index].path));
-            //         },
-            //       );
+            //       return displayImage(value);
             //     } else {
-            //       return Text("no image---");
+            //       return Text("no image yet");
             //     }
             //   },
             // )
+            Expanded(
+              child: ValueListenableBuilder(
+                valueListenable: controller.multiImage,
+                builder: (context, value, child) {
+                  if (value.isNotEmpty) {
+                    return GridView.builder(
+                      itemCount: value.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1, childAspectRatio: 1),
+                      itemBuilder: (context, index) {
+                        return Image.file(File(value[index]!.path));
+                      },
+                    );
+                  } else {
+                    return Text("no image---");
+                  }
+                },
+              ),
+            )
           ],
         ),
       ),
